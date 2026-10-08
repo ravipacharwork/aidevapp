@@ -27,7 +27,8 @@ jobs:
         run: python3 scripts/check_quality.py
 
       - name: Verify workflow files are valid YAML
-        run: python3 -c "import yaml,glob;[yaml.safe_load(open(f)) for f in glob.glob('.github/workflows/*.yml')];print('PASS: workflow YAML is valid')"
+        run: |
+          ruby -ryaml -e "Dir['.github/workflows/*.yml'].each { |f| YAML.load_file(f) }; puts 'PASS - workflow YAML is valid'"
 
       - name: Summary
         if: always()
